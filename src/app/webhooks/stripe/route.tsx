@@ -11,6 +11,7 @@ const stripePromise = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
 const resend = new Resend(process.env.RESEND_API_KEY as string);
 
+//called by Stripe
 export async function POST(request: NextRequest) {
      // stripe instance constructs event -->
      // parse the request text , check if the stripe signature of the request matches our Stripe hook secret
@@ -59,10 +60,10 @@ export async function POST(request: NextRequest) {
 
                 // resend email 
                 await resend.emails.send({
-                    from: `onboarding@resend.dev`,
-                    to: [email],
+                    from: `Support <${process.env.SENDER_EMAIL}`,
+                    to: email,
                     subject: "Order Confirmation",
-                    html: '<p>Congrats on sending your <strong>Second Email</strong>!</p>'
+                    react: '<p>Congrats on sending your <strong>Second Email</strong>!</p>'
                 })
         }
     return new NextResponse(); // it will return NextResponse if everything works
